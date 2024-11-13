@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="utf-8" />
+  <title>AJAX(Asynchronous JavaScript And XML)</title>
+  <script src="jquery-3.7.0.js"></script>
+</head>
+
+<body>
+  <form action="http://localhost/AJAX/ajax.php" id="loginForm">
+    <input type="text" name="login" placeholder="Логин" /><br /><br />
+    <input type="password" name="password" placeholder="Пароль" /><br /><br />
+    <input type="submit" value="Войти" />
+  </form>
+  <div id="result"></div>
+  <script type="text/javascript">
+
+    $(function () {
+      $("#loginForm").submit(function (event) {
+        event.preventDefault();
+        const myPromise = doAjax($("#loginForm").attr('action'), $("#loginForm").serialize());
+        myPromise.then(
+          function (data) {
+            $('#result').html(data);
+          },
+          function (error) {
+            console.log(error);
+          }
+        );
+
+      });
+    });
+
+    function doAjax(url, params) {
+      return new Promise(function (succeed, fail) {
+        $.ajax({
+          url: url,
+          data: params,
+          type: 'POST',
+          // Функция, код которой будет выполнен если запрос будет завершен успешно.
+          success: function (data) {
+            succeed(data);
+          },
+          // Функция, код которой будет выполнен если во время исполнения запроса произойдет ошибка.
+          error: function (jqXHR, statusText, error) {
+            fail(jqXHR.status + '\n' + statusText + '\n' + error);
+          }
+        });
+      })
+    }
+
+  </script>
+</body>
+
+</html>

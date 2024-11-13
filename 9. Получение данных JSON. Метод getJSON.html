@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title>AJAX(Asynchronous JavaScript And XML)</title>
+    <script src="jquery-3.7.0.js">
+    </script>
+</head>
+
+<body>
+    <select id="countries">
+        <option>Выберите страну</option>
+    </select>
+    <script>
+        $(function () {
+            $.getJSON('countries.json', function (data) {
+                $.each(data, function (key, val) {
+                    $('#countries').append('<option value="' + val + '">' + key + '</option>');
+                });
+                $('#countries').bind('change', function (e) {
+                    console.log($("#countries option:selected").val());
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

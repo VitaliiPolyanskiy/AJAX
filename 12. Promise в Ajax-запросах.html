@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="utf-8" />
+  <title>AJAX(Asynchronous JavaScript And XML)</title>
+  <script src="jquery-3.7.0.js"></script>
+</head>
+
+<body>
+  Попросим сервер поделить
+  <input type="text" id="firstNumber" />
+  на
+  <input type="text" id="secondNumber" />
+  <input type="button" value="Отправить" onclick="loadHandler()" />
+  <div id="result"></div>
+  <script type="text/javascript">
+
+    function loadHandler() {
+      let firstNumber = document.getElementById("firstNumber").value;
+      let secondNumber = document.getElementById("secondNumber").value;
+      let params =
+        "firstNumber=" + firstNumber + "&secondNumber=" + secondNumber;
+      get("http://localhost/AJAX/GET-request.php?" + params).then(
+        function (xmlHttp) {
+          try {
+            // responseXML: возвращает ответ от сервера в формате xml
+            let xmlResponse = xmlHttp.responseXML;
+            if (!xmlResponse || !xmlResponse.documentElement)
+              throw ("Неверная XML-структура:\n" + xmlHttp.responseText);
+
+            let xmlRoot = xmlResponse.documentElement;
+            let data = xmlRoot.firstChild.data;
+            document.getElementById("result").innerHTML = "Сервер ответил: " + data;
+          }
+          catch (e) {
+            document.getElementById("result").innerHTML = "Ошибка чтения ответа: " + e.toString();
+          }
+        },
+        function (error) {
+          console.log(error);
+        }
+      );
+    }
+
+    get("http://localhost/AJAX/countries.json").then(
+      function (xmlHttp) {
+        console.log(xmlHttp.response);
+      },
+      function (error) {
+        console.log(error);
+      }
+    );
+
+    function get(url) {
+      return new Promise(function (succeed, fail) {
+        let xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", url, true);
+        xmlHttp.addEventListener("load", function () {
+          if (xmlHttp.status == 200) succeed(xmlHttp);
+          else fail(new Error("Request failed: " + xmlHttp.statusText));
+        });
+        xmlHttp.send();
+      });
+    }
+
+  </script>
+</body>
+
+</html>

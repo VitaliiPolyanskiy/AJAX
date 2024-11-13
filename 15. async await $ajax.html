@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="utf-8" />
+  <title>AJAX(Asynchronous JavaScript And XML)</title>
+  <script src="jquery-3.7.0.js"></script>
+</head>
+
+<body>
+  <form action="http://localhost/AJAX/ajax.php" id="loginForm">
+    <input type="text" name="login" placeholder="Логин" /><br /><br />
+    <input type="password" name="password" placeholder="Пароль" /><br /><br />
+    <input type="submit" value="Войти" />
+  </form>
+  <div id="result"></div>
+  <script>
+    /*
+      Ключевое слово async перед объявлением функции обязывает её всегда возвращать промис,
+      а также позволяет использовать await в теле этой функции.
+      Ключевое слово await заставит интерпретатор JavaScript ждать до тех пор, пока промис 
+      справа от await не выполнится. Это не отнимает ресурсов процессора. Пока промис не выполнится, 
+      JS-движок может заниматься другими задачами: выполнять прочие скрипты, обрабатывать события и т.п.
+    */
+
+    async function doAjax(address, args) {
+      let result;
+      try {
+        result = await $.ajax({
+          url: address,
+          type: "POST",
+          data: args,
+        });
+        return result;
+      } catch (error) {
+        return error;
+      }
+    }
+
+    $(function () {
+      $("#loginForm").submit(function (event) {
+        event.preventDefault();
+        doAjax(
+          $("#loginForm").attr("action"),
+          $("#loginForm").serialize()
+        ).then((data) => $("#result").html(data), function (error) {
+          console.log(error);
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

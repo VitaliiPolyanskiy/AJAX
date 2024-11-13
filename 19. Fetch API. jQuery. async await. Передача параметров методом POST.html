@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title>AJAX(Asynchronous JavaScript And XML)</title>
+    <script src="jquery-3.7.0.js">
+    </script>
+</head>
+
+<body>
+    <form id="loginForm">
+        <input type="text" id="login" placeholder="Логин" /><br><br>
+        <input type="password" id="password" placeholder="Пароль" /><br><br>
+        <input type="submit" value="Войти" />
+    </form>
+    <div id="result"></div>
+    <script>
+        $("#loginForm").submit(function (event) {
+
+            // Предотвращаем обычную отправку формы
+            event.preventDefault();
+            let login = $("#login").val();
+            let password = $("#password").val();
+            let requestData = {
+                login: login,
+                password: password
+            }
+            // Сериализация производится посредством метода serialize и в качестве результата создается объект javascript, 
+            // в котором свойствам соответствуют поля формы
+            getResponse("http://localhost/AJAX/auth.php", requestData);
+        });
+
+        async function getResponse(url, requestData) {
+            const response = await fetch(url,
+                {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+            const responseText = await response.text();
+            console.log(responseText);
+            $('#result').html(responseText);
+
+        }
+    </script>
+</body>
+
+</html>

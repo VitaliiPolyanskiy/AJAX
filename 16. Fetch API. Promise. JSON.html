@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="utf-8" />
+  <title>AJAX(Asynchronous JavaScript And XML)</title>
+  <script src="jquery-3.7.0.js"></script>
+</head>
+
+<body>
+  <div id="countries"></div>
+  <script type="text/javascript">
+    getCountries("countries.json");
+
+    function getCountries(url) {
+      const myPromise = fetch(url);
+      const dataPromise = myPromise.then(
+        function (response) {
+          console.log(response);
+          console.log(response.ok); // Указывает, завершился ли запрос успешно
+          console.log(response.status); // Хранит статусный код ответа
+          console.log(response.statusText); // Хранит сообщение статуса, которое соответствует статусному коду
+          return response.json();
+        },
+        error => error
+      );
+      dataPromise.then(
+        function (responseJSON) {
+          console.log(responseJSON);
+          for (let [key, value] of Object.entries(responseJSON)) {
+            document.getElementById("countries").innerHTML += (`${key}:${value}`) + "<br>";
+          }
+        },
+        error =>
+          console.log(error));
+    }
+
+
+  </script>
+</body>
+
+</html>

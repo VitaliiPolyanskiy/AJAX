@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title>AJAX(Asynchronous JavaScript And XML)</title>
+    <script src="jquery-3.7.0.js">
+    </script>
+</head>
+
+<body>
+    <button>Отправить запрос</button>
+    <div id="div1"></div>
+
+    <script>
+        /*
+            status: содержит статусный код ответа HTTP, который пришел от сервера. 
+            С помощью статусного кода можно судить об успешности запроса или об ошибках, 
+            которые могли бы возникнуть при его выполнении. 
+            Например, статусный код 200 указывает на то, что запрос прошел успешно. 
+            Код 403 говорит о необходимости авторизации для выполнения запроса, 
+            а код 404 сообщает, что ресурс не найден и так далее.
+            statusText: Текстовая расшифровка status, например "Not Found" или "OK".
+            responseType: возвращает тип ответа
+            responseText: возвращает текст ответа сервера
+            responseXML: возвращает xml, если ответ от сервера в формате xml.
+        */
+        $(function () {
+            $('button').click(function () {
+                // Метод load позволяет загрузить данные с удаленного сервера и вставить их в содержимое выбранного элемента.
+                $('#div1').load("countries.json", function (responseText, textStatus, xmlHttpRequest) {
+                    $("#div1").html(responseText);
+                    console.log(responseText); // Содержит ответ сервера
+                    console.log(textStatus); // Содержит статус выполнения запроса
+                    console.log(xmlHttpRequest.status); // Содержит объект XMLHttpRequest
+
+                    let status = xmlHttpRequest.status;//Содержит статусный код ответа HTTP, который пришел от сервера.
+                    if (status == 200)
+                        console.log("Текст ответа: " + xmlHttpRequest.responseText);
+                    else if (status == 404)
+                        console.log("Ресурс не найден");
+                    else
+                        console.log(xmlHttpRequest.statusText);
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

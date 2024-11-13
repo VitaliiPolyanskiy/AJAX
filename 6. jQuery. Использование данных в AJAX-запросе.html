@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title>AJAX(Asynchronous JavaScript And XML)</title>
+    <script src="jquery-3.7.0.js">
+    </script>
+</head>
+
+<body>
+    Попросим сервер поделить
+    <input type="text" id="firstNumber" />
+    на
+    <input type="text" id="secondNumber" />
+    <button type="button" value="Send">Send</button>
+    <div id="myDivElement"></div>
+    <script>
+        $(function () {
+            $("button").click(function () {
+                let firstNumber = $("#firstNumber").val();
+                let secondNumber = $("#secondNumber").val();
+                let params = "firstNumber=" + firstNumber + "&secondNumber=" + secondNumber;
+                // Метод load позволяет загрузить данные с удаленного сервера и вставить их в содержимое выбранного элемента.
+                $("#myDivElement").load("http://localhost/AJAX/GET-request.php", params,
+                    function (response, textStatus, xmlHttpRequest) {
+                        console.log("Текст ответа: " + response);
+                        console.log("Статус выполнения запроса: " + textStatus);
+                        console.log("Статусный код ответа HTTP: " + xmlHttpRequest.status);
+
+                        if (xmlHttpRequest.status == 200)
+                            console.log("Текст ответа: " + xmlHttpRequest.responseText);
+                        else if (status == 404)
+                            console.log("Ресурс не найден");
+                        else
+                            console.log(xmlHttpRequest.statusText);
+                    });
+            });
+        });
+    </script>
+</body>
+
+</html>

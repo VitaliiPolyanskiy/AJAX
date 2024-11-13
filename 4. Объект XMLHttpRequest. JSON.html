@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title>AJAX(Asynchronous JavaScript And XML)</title>
+    <script>
+        "use strict"; // используем стандарт ECMAScript 5 и выше
+        function handleLoad() {
+            let myDiv = document.getElementById("myDivElement");
+                if (xmlHttp.status == 200) {
+                    try {
+                        let response = xmlHttp.response; // responseText: возвращает текст ответа сервера
+
+                        for (const prop of Object.entries(response)) {
+                            myDiv.innerHTML += prop[0] + ": " + prop[1] + "<br>";
+                        }
+                    }
+                    catch (e) {
+                        myDiv.innerHTML += "Ошибка чтения ответа: " + e.toString();
+                    }
+                }
+                else {
+                    myDiv.innerHTML +=
+                        "Статус запроса: 4 - выполнение запроса полностью завершено (даже если получен код ошибки, например, 404)<br />";
+                    myDiv.innerHTML += "Проблемы с получением данных:\n" + xmlHttp.statusText;
+                }
+        }
+
+        let xmlHttp = new XMLHttpRequest(); // глобальный объект
+
+        function loadHandler() {
+            if (xmlHttp) {
+                try {
+                    xmlHttp.onload = handleLoad;
+                    xmlHttp.open("GET", "countries.json", true);
+
+                    //Чтобы полученные данные автоматически были преобразованы в формат JSON
+                    xmlHttp.responseType = "json";
+
+                    xmlHttp.setRequestHeader("Accept", "application/json");    // принимаем только json
+                    xmlHttp.send();
+                }
+                catch (e) {
+                    console.log(e.toString());
+                }
+            }
+        }
+
+    </script>
+</head>
+
+<body onload="loadHandler()">
+    <div id="myDivElement"></div>
+</body>
+
+</html>

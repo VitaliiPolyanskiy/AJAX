@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title>AJAX(Asynchronous JavaScript And XML)</title>
+    <script src="jquery-3.7.0.js">
+    </script>
+</head>
+
+<body>
+    <table id="cities" style="border: 1px solid black">
+        <caption>Города Швейцарии</caption>
+        <tr>
+            <td>Название</td>
+            <td>Численность населения</td>
+        <tr>
+    </table>
+    <script>
+        $(function () {
+            $.getJSON('cities.json', function (data) {
+                for (let i = 0; i < data.cities.length; i++) {
+                    $('#cities').append('<tr><td>' + data.cities[i].name +
+                        '</td><td>' + data.cities[i].population + '</td><tr>');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

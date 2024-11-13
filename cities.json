@@ -1,0 +1,8 @@
+﻿{
+    "cities":
+    [
+        {"name":"Цюрих","population":378884},
+        {"name":"Женева","population":188634},
+        {"name":"Базель","population":164937}
+    ]
+}

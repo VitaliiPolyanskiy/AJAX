@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title>AJAX(Asynchronous JavaScript And XML)</title>
+    <script src="jquery-3.7.0.js">
+    </script>
+</head>
+
+<body>
+    Попросим сервер поделить
+    <input type="text" id="firstNumber" />
+    на
+    <input type="text" id="secondNumber" />
+    <button type="button" value="Send">Send</button>
+    <div id="myDivElement"></div>
+    <script>
+        $(function () {
+            $("button").click(function () {
+                let firstNumber = $("#firstNumber").val();
+                let secondNumber = $("#secondNumber").val();
+                let requestData = {
+                    firstNumber: firstNumber,
+                    secondNumber: secondNumber
+                }
+                let jqxhr = $.get("http://localhost/AJAX/JSON.GET-request.php", requestData,
+                    function (data, status, jqXHR) {
+                        console.log(data.response);
+                        console.log(status);
+                    }, 'json');
+                jqxhr.done(function (data) {
+                    $('#myDivElement').html(data.response);
+                });
+                jqxhr.fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR.responseText); // Объект jqXHR - обертка над стандартным объектом javascript XMLHttpRequest 
+                    console.log(textStatus); // Содержит статус выполнения запроса
+                    console.log(errorThrown); // Описание ошибки
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
